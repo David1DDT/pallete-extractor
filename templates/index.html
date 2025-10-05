@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>img palette</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">🎨 img palette</a>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h1>Generate Color Palette</h1>
+        <p class="text-secondary">Upload an image and customize the color extraction.</p>
+    </div>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <div class="card p-3">
+                    <form id="uploadForm" action="{{ url_for('index') }}" method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="fileInput" class="form-label text-white">Choose an image file</label>
+                            <input class="form-control" type="file" id="fileInput" name="image" required>
+                            <label for="colour_count" class="form-label mt-2 text-secondary">Number of colors</label>
+                            <input class="form-control" type="number" name="colour_count" value="5" min="1" max="20"
+                                required>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="reduce_brightness"
+                                name="reduce_brightness">
+                            <label class="form-check-label" for="reduce_brightness">Reduce brightness (optional)</label>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="reduce_gradient" name="reduce_gradient">
+                            <label class="form-check-label" for="reduce_gradient">Reduce color gradient</label>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-light">Upload</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                {% if palette %}
+                <div class="card p-3">
+                    <h5 class="card-title mb-3">Extracted Color Palette</h5>
+                    <div class="d-flex flex-wrap">
+                        {% for color in palette %}
+                        <div style="background-color: {{ color }}; width: 80px; height: 80px; border-radius: 10px; margin: 5px; border: 1px solid #ccc;"
+                            title="{{ color }}"></div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% else %}
+                <div class="alert alert-info">No image uploaded yet. Please upload an image to generate its color
+                    palette.</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
